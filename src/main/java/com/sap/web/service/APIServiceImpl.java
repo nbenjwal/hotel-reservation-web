@@ -52,7 +52,9 @@ public class APIServiceImpl implements APIService {
 			}
 			if (dayCount == count) {
 				reserveRoom(list);
-				return new BookingResponse("Room" + i + " booking confirmed. from Day" + s + " to Day" + e);
+				int roomNumber = i + 1;
+				return new BookingResponse(
+						"Room-" + roomNumber + " booked successfully from Day-" + s + " to Day-" + e);
 			}
 			count = 0;
 			list = new ArrayList<>();
