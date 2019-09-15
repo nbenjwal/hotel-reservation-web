@@ -5,13 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sap.web.entity.APIException;
-import com.sap.web.entity.Booking;
+import com.sap.web.entity.BookingEntity;
 import com.sap.web.entity.BookingResponse;
 import com.sap.web.repo.BookingRepo;
 
@@ -63,7 +64,7 @@ public class APIServiceImpl implements APIService {
 				reserveRoom(list);
 				int roomNumber = i + 1;
 				// persist booking to the db
-				Booking booking = new Booking();
+				BookingEntity booking = new BookingEntity();
 				booking.setRoomNumber("Room-" + roomNumber);
 				StringJoiner joiner = new StringJoiner(",");
 				for (String str : list) {
@@ -115,14 +116,26 @@ public class APIServiceImpl implements APIService {
 	}
 
 	@Override
-	public Optional<Booking> getBookingById(int id) {
-		return repo.findById(id);
+	public BookingEntity getBookingById(int id) {
+		Optional<BookingEntity> booking = repo.findById(id);
+		if (booking.isPresent()) {
+			return booking.get();
+		}
+		return null;
 	}
 
 	@Override
-	public Iterable<Booking> getAllBookings() {
+	public List<BookingEntity> getAllBookings() {
 		// TODO Auto-generated method stub
-		return repo.findAll();
+		List<BookingEntity> list = new ArrayList<>();
+		Iterable<BookingEntity> all = repo.findAll();
+		all.forEach(new Consumer<BookingEntity>() {
+			@Override
+			public void accept(BookingEntity t) {
+				list.add(t);
+			}
+		});
+		return list;
 	}
 
 }

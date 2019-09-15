@@ -1,7 +1,6 @@
 package com.sap.web.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.StringJoiner;
 
 import javax.validation.Valid;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sap.web.entity.APIException;
-import com.sap.web.entity.Booking;
+import com.sap.web.entity.BookingEntity;
 import com.sap.web.entity.BookingRequest;
 import com.sap.web.entity.BookingResponse;
 import com.sap.web.service.APIService;
@@ -44,12 +43,12 @@ public class APIController {
 	}
 
 	@RequestMapping(value = "/api/hotel/{id}", method = RequestMethod.GET)
-	public Optional<Booking> getBooking(@PathVariable("id") int id) {
+	public BookingEntity getBooking(@PathVariable("id") int id) {
 		return service.getBookingById(id);
 	}
 
 	@RequestMapping(value = "/api/hotel/all", method = RequestMethod.GET)
-	public Iterable<Booking> getAllBookings() {
+	public List<BookingEntity> getAllBookings() {
 		return service.getAllBookings();
 	}
 }
