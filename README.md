@@ -11,7 +11,7 @@ jdk8, maven 3.3.X
 * It will generate a jar file inside target folder.
 * Go to the target folder using command prompt and run below command
 
-  `java -jar hotel-reservation-web-0.0.1-SNAPSHOT.jar`
+  `java -jar hotel-app.jar`
 
 ## Access :
 
