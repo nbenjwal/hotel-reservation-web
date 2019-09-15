@@ -1,16 +1,25 @@
 package com.sap.web.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.StringJoiner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.sap.web.entity.APIException;
+import com.sap.web.entity.Booking;
 import com.sap.web.entity.BookingResponse;
+import com.sap.web.repo.BookingRepo;
 
 @Service
 public class APIServiceImpl implements APIService {
+
+	@Autowired
+	private BookingRepo repo;
 
 	@Value("${hotel.room.count}")
 	private int roomCount;
@@ -53,6 +62,16 @@ public class APIServiceImpl implements APIService {
 			if (dayCount == count) {
 				reserveRoom(list);
 				int roomNumber = i + 1;
+				// persist booking to the db
+				Booking booking = new Booking();
+				booking.setRoomNumber("Room-" + roomNumber);
+				StringJoiner joiner = new StringJoiner(",");
+				for (String str : list) {
+					joiner.add(str.split("_")[1]);
+				}
+				booking.setDays(joiner.toString());
+				booking.setBookingDate(new Date());
+				repo.save(booking);
 				return new BookingResponse(
 						"Room-" + roomNumber + " booked successfully from Day-" + s + " to Day-" + e);
 			}
@@ -93,6 +112,17 @@ public class APIServiceImpl implements APIService {
 			int j = Integer.parseInt(token.split("_")[1]);
 			db[i][j] = 1;
 		}
+	}
+
+	@Override
+	public Optional<Booking> getBookingById(int id) {
+		return repo.findById(id);
+	}
+
+	@Override
+	public Iterable<Booking> getAllBookings() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
 	}
 
 }
