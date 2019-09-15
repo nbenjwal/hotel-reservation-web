@@ -3,7 +3,7 @@
 
 	app.service("appService", function($location, $http) {
 
-		var url = $location.absUrl() + "hotel/api/book";
+		var url = $location.absUrl() + "api/hotel";
 
 		var config = {
 			headers : {

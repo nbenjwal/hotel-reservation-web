@@ -26,7 +26,7 @@ public class APIController {
 	@Autowired
 	private APIService service;
 
-	@RequestMapping(value = "/hotel/api/book", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/hotel", method = RequestMethod.POST)
 	public BookingResponse bookHotel(@RequestBody @Valid BookingRequest request, BindingResult bindingResult) {
 		StringJoiner errorFields = new StringJoiner(",");
 		if (bindingResult.hasErrors()) {
@@ -43,12 +43,12 @@ public class APIController {
 
 	}
 
-	@RequestMapping(value = "/hotel/api/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/hotel/{id}", method = RequestMethod.GET)
 	public Optional<Booking> getBooking(@PathVariable("id") int id) {
 		return service.getBookingById(id);
 	}
 
-	@RequestMapping(value = "/hotel/api/all", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/hotel/all", method = RequestMethod.GET)
 	public Iterable<Booking> getAllBookings() {
 		return service.getAllBookings();
 	}
